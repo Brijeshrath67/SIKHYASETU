@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="SikhyaSetu logo">
+  <rect width="256" height="256" rx="40" fill="#0f172a"/>
+  <path d="M54 182V74h38v84h54V74h38v108H54zm126 0V74h33v108h-33z" fill="#f8fafc"/>
+  <circle cx="176" cy="92" r="16" fill="#60a5fa"/>
+</svg>

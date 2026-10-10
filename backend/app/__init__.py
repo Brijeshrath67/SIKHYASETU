@@ -1,1 +1,4 @@
-# Placeholder
+"""SikhyaSetu backend package."""
+
+__all__ = ["main"]
+

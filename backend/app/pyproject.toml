@@ -1,0 +1,14 @@
+[project]
+name = "sikhyasetu-backend"
+version = "0.1.0"
+description = "Offline-first AI tutor backend for SikhyaSetu"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.6",
+  "pydantic==2.9.2",
+  "httpx==0.27.2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
