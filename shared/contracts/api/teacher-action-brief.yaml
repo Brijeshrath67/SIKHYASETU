@@ -1,1 +1,23 @@
-{}
+openapi: 3.1.0
+info:
+  title: SikhyaSetu — Teacher Action Brief API
+  version: 1.0.0
+paths:
+  /api/v1/teacher-brief:
+    get:
+      summary: Get the class-wide action brief
+      description: >
+        Aggregated, pseudonymous view for a teacher: misconception clusters,
+        the suggested next intervention, learners needing follow-up, and the
+        next pack focus per learner. Contains no learner free text.
+      parameters:
+        - name: class_name
+          in: query
+          required: false
+          schema: { type: string, default: "Class 9 Science" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "../models/teacher-action-brief.json" }

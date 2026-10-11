@@ -1,1 +1,146 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/lesson-pack.json",
+  "title": "LessonPack",
+  "description": "A signed, offline-ready bundle of concept cards for one learner. MUST contain no floating point numbers so Python and JavaScript produce identical canonical JSON.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pack_id", "pack_version", "profile_id", "generated_at", "objectives", "concepts", "budget", "integrity"],
+  "properties": {
+    "pack_id": { "type": "string", "description": "Deterministic: {profile_id}-{primary_concept_id}." },
+    "pack_version": { "type": "string", "default": "1.0.0" },
+    "profile_id": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "primary_language": { "type": "string", "default": "Odia" },
+    "secondary_language": { "type": "string", "default": "English" },
+    "reading_level": { "type": "string", "default": "Class 9" },
+    "objectives": { "type": "array", "items": { "type": "string" } },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["concept_id", "title_en", "title_or", "objective_en", "objective_or", "explanation_en", "explanation_or", "local_example_or", "key_terms", "audio", "probe", "teach_back_prompt_en", "teach_back_prompt_or"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "title_en": { "type": "string" },
+          "title_or": { "type": "string" },
+          "objective_en": { "type": "string" },
+          "objective_or": { "type": "string" },
+          "explanation_en": { "type": "string" },
+          "explanation_or": { "type": "string" },
+          "local_example_or": { "type": "string" },
+          "key_terms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["en", "term_or", "gloss_or"],
+              "properties": {
+                "en": { "type": "string" },
+                "term_or": { "type": "string" },
+                "gloss_or": { "type": "string" }
+              }
+            }
+          },
+          "audio": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["available", "kb"],
+            "properties": {
+              "available": { "type": "boolean" },
+              "kb": { "type": "integer", "minimum": 0 }
+            }
+          },
+          "probe": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["probe_id", "concept_id", "prompt_en", "prompt_or", "correct_label", "difficulty", "options"],
+            "properties": {
+              "probe_id": { "type": "string" },
+              "concept_id": { "type": "string" },
+              "prompt_en": { "type": "string" },
+              "prompt_or": { "type": "string" },
+              "correct_label": { "type": "string" },
+              "difficulty": { "type": "string" },
+              "misconception_id": { "type": ["string", "null"] },
+              "options": {
+                "type": "array",
+                "minItems": 2,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["label", "value_en", "value_or"],
+                  "properties": {
+                    "label": { "type": "string" },
+                    "value_en": { "type": "string" },
+                    "value_or": { "type": "string" },
+                    "misconception_id": { "type": ["string", "null"] }
+                  }
+                }
+              }
+            }
+          },
+          "intervention": {
+            "anyOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["misconception_id", "type", "title_en", "title_or", "body_en", "body_or"],
+                "properties": {
+                  "misconception_id": { "type": "string" },
+                  "type": { "type": "string" },
+                  "title_en": { "type": "string" },
+                  "title_or": { "type": "string" },
+                  "body_en": { "type": "string" },
+                  "body_or": { "type": "string" },
+                  "prerequisite_concept_id": { "type": ["string", "null"] }
+                }
+              }
+            ]
+          },
+          "teach_back_prompt_en": { "type": "string" },
+          "teach_back_prompt_or": { "type": "string" }
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data_budget_kb", "session_minutes", "estimated_kb", "estimated_minutes", "fits", "audio_included"],
+      "properties": {
+        "data_budget_kb": { "type": "integer", "minimum": 0 },
+        "session_minutes": { "type": "integer", "minimum": 1 },
+        "estimated_kb": { "type": "integer", "minimum": 0 },
+        "estimated_minutes": { "type": "integer", "minimum": 0 },
+        "fits": { "type": "boolean" },
+        "audio_included": { "type": "boolean" },
+        "decisions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "enum": ["cloud", "seed", "fallback"] },
+        "fallback": { "type": "boolean" },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "checksum"],
+      "properties": {
+        "algorithm": { "type": "string", "const": "sha256" },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "SHA-256 over canonical JSON with the integrity field removed."
+        }
+      }
+    },
+    "trace": { "type": "array", "items": { "type": "string" } }
+  }
+}

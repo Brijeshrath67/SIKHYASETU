@@ -1,1 +1,42 @@
-{}
+openapi: 3.1.0
+info:
+  title: SikhyaSetu — Planning & Agent API
+  version: 1.0.0
+paths:
+  /api/v1/planning/{profile_id}:
+    get:
+      summary: Get the learner's revision plan
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "../models/learning-plan.json" }
+  /api/v1/planning/{profile_id}/trace:
+    get:
+      summary: Get the most recent agent trace for the learner
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "../models/agent-trace.json" }
+  /api/v1/planning/{profile_id}/run:
+    post:
+      summary: Run the agent graph now and return its trace
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "../models/agent-trace.json" }
+components:
+  parameters:
+    ProfileId:
+      name: profile_id
+      in: path
+      required: true
+      schema: { type: string }

@@ -1,0 +1,76 @@
+/* Guru Avatar Pro Styling */
+
+.guru-avatar-pro {
+  display: block;
+  overflow: visible;
+  transition: transform 0.2s ease;
+}
+
+.guru-pro-orbit {
+  opacity: 0;
+  transform-origin: 50px 50px;
+}
+
+.guru-avatar-pro.is-think .guru-pro-orbit {
+  opacity: 1;
+  animation: guru-spin 4s linear infinite;
+}
+
+.guru-avatar-pro.is-happy .guru-pro-flame {
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.8));
+}
+
+.guru-pro-eq {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.guru-avatar-pro.is-speaking .guru-pro-eq {
+  opacity: 1;
+}
+
+.guru-avatar-pro.is-speaking .eq-bar-1 {
+  animation: eq-pulse 0.6s ease-in-out infinite alternate;
+}
+
+.guru-avatar-pro.is-speaking .eq-bar-2 {
+  animation: eq-pulse 0.45s ease-in-out infinite alternate 0.1s;
+}
+
+.guru-avatar-pro.is-speaking .eq-bar-3 {
+  animation: eq-pulse 0.5s ease-in-out infinite alternate 0.2s;
+}
+
+.guru-avatar-pro.is-speaking .eq-bar-4 {
+  animation: eq-pulse 0.4s ease-in-out infinite alternate 0.15s;
+}
+
+.guru-avatar-pro.is-speaking .eq-bar-5 {
+  animation: eq-pulse 0.55s ease-in-out infinite alternate 0.05s;
+}
+
+@keyframes guru-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes eq-pulse {
+  0% {
+    transform: scaleY(0.7);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(1.8);
+    transform-origin: bottom;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guru-avatar-pro * {
+    animation: none !important;
+  }
+}

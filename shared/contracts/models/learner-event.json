@@ -1,1 +1,29 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/learner-event.json",
+  "title": "LearnerEvent",
+  "description": "A single offline activity event. Idempotent on id.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "profile_id", "type"],
+  "properties": {
+    "id": { "type": "string", "description": "Client-generated UUID; the server deduplicates on it." },
+    "profile_id": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": [
+        "session_started",
+        "probe_answered",
+        "intervention_viewed",
+        "teachback_recorded",
+        "pack_completed",
+        "sync_succeeded",
+        "sync_failed"
+      ]
+    },
+    "pack_id": { "type": ["string", "null"] },
+    "concept_id": { "type": ["string", "null"] },
+    "details": { "type": "object", "additionalProperties": true, "default": {} },
+    "created_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

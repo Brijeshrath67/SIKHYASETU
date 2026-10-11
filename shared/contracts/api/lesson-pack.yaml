@@ -1,1 +1,35 @@
-{}
+openapi: 3.1.0
+info:
+  title: SikhyaSetu — Lesson Pack API
+  version: 1.0.0
+paths:
+  /api/v1/lesson-packs/{profile_id}/next:
+    get:
+      summary: Return the learner's current (or freshly compiled) lesson pack
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          description: A signed, offline-ready pack
+          content:
+            application/json:
+              schema: { $ref: "../models/lesson-pack.json" }
+        "404": { description: Unknown learner }
+  /api/v1/lesson-packs/{profile_id}/compile:
+    post:
+      summary: Force the agent graph to recompile the pack and return the trace
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          description: The agent trace for the compilation
+          content:
+            application/json:
+              schema: { $ref: "../models/agent-trace.json" }
+components:
+  parameters:
+    ProfileId:
+      name: profile_id
+      in: path
+      required: true
+      schema: { type: string }

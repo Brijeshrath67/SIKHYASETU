@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/schemas/privacy/pseudonymized-ids.json",
+  "title": "Pseudonymized identifiers",
+  "description": "Rules that keep a learner unlinkable to a real identity.",
+  "$defs": {
+    "Pseudonym": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$",
+      "description": "A locally-chosen label such as 'sunita'. Not derived from any real identifier."
+    }
+  },
+  "properties": {
+    "consent_identification": {
+      "type": "boolean",
+      "description": "When false, the learner is fully pseudonymous and no identifying fields are stored."
+    }
+  }
+}

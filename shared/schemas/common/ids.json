@@ -1,1 +1,33 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/schemas/common/ids.json",
+  "title": "Identifiers",
+  "description": "Identifier conventions shared by backend and PWA.",
+  "$defs": {
+    "ProfileId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$",
+      "description": "Pseudonymous learner id (e.g. sunita, asha). Never a real name or roll number."
+    },
+    "ConceptId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$",
+      "description": "Stable concept slug (e.g. electric-current)."
+    },
+    "MisconceptionId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$",
+      "description": "Stable misconception slug (e.g. current-gets-used-up)."
+    },
+    "PackId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+-[a-z0-9-]+$",
+      "description": "Deterministic: {profile_id}-{primary_concept_id}."
+    },
+    "EventId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Client-generated UUID; the server deduplicates on it."
+    }
+  }
+}

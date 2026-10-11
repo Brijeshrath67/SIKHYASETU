@@ -1,1 +1,25 @@
-{}
+openapi: 3.1.0
+info:
+  title: SikhyaSetu — Mastery State API
+  version: 1.0.0
+paths:
+  /api/v1/learners/{profile_id}/fingerprints:
+    get:
+      summary: List the learner's misconception fingerprints (mastery states)
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          description: One fingerprint per touched concept
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "../models/misconception-fingerprint.json" }
+components:
+  parameters:
+    ProfileId:
+      name: profile_id
+      in: path
+      required: true
+      schema: { type: string }

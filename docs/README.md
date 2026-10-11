@@ -1,12 +1,18 @@
 # Documentation
 
-This folder holds the project’s proposal extraction, architecture notes, privacy constraints, and product planning material for SikhyaSetu.
+Architecture, product, and security notes for SikhyaSetu, plus the extracted
+proposal used as the source of truth.
 
-## Included documents
+## Included
 
-- proposal_extract.txt: extracted proposal text used for requirement validation
-- architecture/: offline-first flow, monorepo structure, agent workflow, sync design
-- product/: personas, user flow, roadmap
-- security/: pseudonymization, audio retention, privacy schema
+- `proposal_extract.txt` — extracted proposal text.
+- `architecture/` — offline-first flow, agent workflow, sync & idempotency,
+  monorepo structure.
+- `product/` — personas, user flow, roadmap.
+- `security/` — pseudonymization, privacy schema, audio retention.
 
-These materials are meant to keep the project aligned with the actual proposal and the MVP boundaries described in the original concept.
+## Where to start
+
+1. `architecture/offline-first-flow.md` — how a lesson runs with no network.
+2. `architecture/agent-workflow.md` — the explicit misconception→mastery graph.
+3. `shared/contracts/README.md` — the shapes that cross the boundary.

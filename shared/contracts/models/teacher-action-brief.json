@@ -1,1 +1,63 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/teacher-action-brief.json",
+  "title": "TeacherActionBrief",
+  "description": "The Monday-morning brief: class-wide misconception clusters and the next intervention, with no individual free text.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["class_name", "generated_at", "totals", "top_misconceptions"],
+  "properties": {
+    "class_name": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "totals": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "top_misconceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label_en", "label_or", "affected_learners", "bucket"],
+        "properties": {
+          "misconception_id": { "type": ["string", "null"] },
+          "label_en": { "type": "string" },
+          "label_or": { "type": "string" },
+          "concept_id": { "type": ["string", "null"] },
+          "affected_learners": { "type": "integer", "minimum": 0 },
+          "bucket": { "type": "string" }
+        }
+      }
+    },
+    "suggested_intervention": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["prompt_en", "prompt_or"],
+          "properties": {
+            "misconception_id": { "type": ["string", "null"] },
+            "prompt_en": { "type": "string" },
+            "prompt_or": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "learners_needing_follow_up": { "type": "array", "items": { "type": "string" } },
+    "next_pack_focus": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["profile_id", "concept_id", "concept_title_or", "reason"],
+        "properties": {
+          "profile_id": { "type": "string" },
+          "concept_id": { "type": "string" },
+          "concept_title_or": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}

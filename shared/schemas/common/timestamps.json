@@ -1,1 +1,17 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/schemas/common/timestamps.json",
+  "title": "Timestamps",
+  "description": "All timestamps are ISO-8601 with an explicit UTC offset.",
+  "$defs": {
+    "IsoTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "examples": ["2026-01-01T10:05:00+00:00"]
+    },
+    "NullableIsoTimestamp": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

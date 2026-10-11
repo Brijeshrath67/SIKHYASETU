@@ -1,1 +1,64 @@
-{}
+openapi: 3.1.0
+info:
+  title: SikhyaSetu — Event Ingest API
+  version: 1.0.0
+paths:
+  /api/v1/events/sync:
+    post:
+      summary: Ingest a batch of offline events, idempotently, then run the agent graph
+      description: >
+        Events are deduplicated on their client-generated id, so a phone may
+        safely retry the same batch. The response reports how many were new and
+        includes the agent trace(s) plus the next pack id(s) per learner.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [events]
+              properties:
+                events:
+                  type: array
+                  items: { $ref: "../models/learner-event.json" }
+      responses:
+        "200":
+          description: Sync result
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accepted, duplicates, rejected, affected_profiles]
+                properties:
+                  accepted: { type: integer }
+                  duplicates: { type: integer }
+                  rejected: { type: integer }
+                  event_ids: { type: array, items: { type: string } }
+                  affected_profiles: { type: array, items: { type: string } }
+                  runs:
+                    type: array
+                    items: { $ref: "../models/agent-trace.json" }
+                  next_pack_ids:
+                    type: object
+                    additionalProperties: { type: string }
+        "422":
+          description: Malformed batch
+  /api/v1/sync/status:
+    get:
+      summary: Lightweight reachability + last-sync probe
+      parameters:
+        - name: profile_id
+          in: query
+          required: false
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, const: ok }
+                  profile_id: { type: string }
+                  last_synced_at: { type: ["string", "null"], format: date-time }

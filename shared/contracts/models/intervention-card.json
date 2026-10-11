@@ -1,1 +1,18 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/intervention-card.json",
+  "title": "InterventionCard",
+  "description": "The short, targeted repair shown when a misconception is detected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["misconception_id", "type", "title_en", "title_or", "body_en", "body_or"],
+  "properties": {
+    "misconception_id": { "type": "string" },
+    "type": { "type": "string" },
+    "title_en": { "type": "string" },
+    "title_or": { "type": "string" },
+    "body_en": { "type": "string" },
+    "body_or": { "type": "string" },
+    "prerequisite_concept_id": { "type": ["string", "null"] }
+  }
+}

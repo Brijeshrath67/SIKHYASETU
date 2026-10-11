@@ -1,38 +1,64 @@
-const CACHE_NAME = 'sikhyasetu-v1';
-const APP_SHELL = ['/'];
+/* SikhyaSetu service worker (production only).
+ *
+ * Strategy:
+ *  - Navigations: network-first, so a new deploy is picked up immediately and
+ *    the cached shell is only a fallback when offline.
+ *  - Hashed build assets (/assets/*): cache-first, they are immutable.
+ *  - Everything else (API, dev modules): straight to the network.
+ */
+const CACHE = 'sikhyasetu-v2';
+const SHELL = ['/', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()),
+  );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))),
-    ),
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
+      .then(() => self.clients.claim()),
   );
-  self.clients.claim();
 });
+
+function isHashedAsset(url) {
+  return url.pathname.startsWith('/assets/');
+}
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+  const request = event.request;
+  if (request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
         .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          caches.open(CACHE).then((cache) => cache.put('/', copy));
           return response;
         })
-        .catch(() => cached || responsePromiseFallback(event.request));
-    }),
-  );
-});
+        .catch(() => caches.match('/')),
+    );
+    return;
+  }
 
-function responsePromiseFallback(request) {
-  if (request.mode === 'navigate') return caches.match('/');
-  return new Response('Offline mode', { status: 503, headers: { 'Content-Type': 'text/plain' } });
-}
+  if (isHashedAsset(url)) {
+    event.respondWith(
+      caches.match(request).then(
+        (cached) =>
+          cached ||
+          fetch(request).then((response) => {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(request, copy));
+            return response;
+          }),
+      ),
+    );
+  }
+});

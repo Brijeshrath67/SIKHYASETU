@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/agent-trace.json",
+  "title": "AgentTrace",
+  "description": "An observable record of what the explicit agent graph did, node by node, for one run.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["run_id", "profile_id", "trigger", "started_at", "nodes"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "profile_id": { "type": "string" },
+    "trigger": { "type": "string" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": ["string", "null"], "format": "date-time" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "status", "summary"],
+        "properties": {
+          "name": { "type": "string" },
+          "status": { "type": "string", "enum": ["ok", "skipped", "fallback", "error"] },
+          "summary": { "type": "string" },
+          "details": { "type": "object", "additionalProperties": true }
+        }
+      }
+    },
+    "decision": { "type": "object", "additionalProperties": true }
+  }
+}

@@ -1,1 +1,33 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/learning-plan.json",
+  "title": "LearningPlan",
+  "description": "The ordered revision plan the planner node produces for a learner.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["profile_id", "generated_at", "steps"],
+  "properties": {
+    "profile_id": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "unresolved": {
+      "type": "array",
+      "description": "Fingerprints still carrying an active misconception.",
+      "items": { "type": "object" }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["concept_id", "concept_title_or", "reason", "priority"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "concept_title_or": { "type": "string" },
+          "reason": { "type": "string" },
+          "priority": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

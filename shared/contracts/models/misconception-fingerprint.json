@@ -1,1 +1,43 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/misconception-fingerprint.json",
+  "title": "MisconceptionFingerprint",
+  "description": "Explainable diagnosis: what the learner likely believes and why we think so. Shown to the learner and teacher; never hidden.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["profile_id", "concept_id", "concept_title_or", "mastery", "status"],
+  "properties": {
+    "profile_id": { "type": "string" },
+    "concept_id": { "type": "string" },
+    "concept_title_or": { "type": "string" },
+    "mastery": { "type": "number", "minimum": 0, "maximum": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["unresolved", "repairing", "review", "mastered", "needs_review"]
+    },
+    "misconception_id": { "type": ["string", "null"] },
+    "misconception_label_en": { "type": ["string", "null"] },
+    "misconception_label_or": { "type": ["string", "null"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "recommended_intervention": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "title_en", "title_or", "body_en", "body_or"],
+          "properties": {
+            "type": { "type": "string" },
+            "title_en": { "type": "string" },
+            "title_or": { "type": "string" },
+            "body_en": { "type": "string" },
+            "body_or": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "next_review_at": { "type": ["string", "null"], "format": "date-time" },
+    "updated_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

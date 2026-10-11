@@ -1,1 +1,15 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/schemas/common/sync-status.json",
+  "title": "SyncStatus",
+  "description": "What the PWA tracks about its local outbox.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pending"],
+  "properties": {
+    "online": { "type": "boolean" },
+    "pending": { "type": "integer", "minimum": 0, "description": "Events waiting to be pushed." },
+    "last_synced_at": { "type": ["string", "null"], "format": "date-time" },
+    "last_error": { "type": ["string", "null"] }
+  }
+}

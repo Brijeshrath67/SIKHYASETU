@@ -1,1 +1,36 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/probe-question.json",
+  "title": "ProbeQuestion",
+  "description": "A diagnostic multiple-choice probe. Each distractor maps to a misconception id.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["probe_id", "concept_id", "prompt_en", "prompt_or", "correct_label", "difficulty", "options"],
+  "properties": {
+    "probe_id": { "type": "string" },
+    "concept_id": { "type": "string" },
+    "prompt_en": { "type": "string" },
+    "prompt_or": { "type": "string" },
+    "correct_label": { "type": "string" },
+    "difficulty": { "type": "string" },
+    "misconception_id": { "type": ["string", "null"] },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "value_en", "value_or"],
+        "properties": {
+          "label": { "type": "string" },
+          "value_en": { "type": "string" },
+          "value_or": { "type": "string" },
+          "misconception_id": {
+            "type": ["string", "null"],
+            "description": "Null on the correct option; set on each distractor."
+          }
+        }
+      }
+    }
+  }
+}

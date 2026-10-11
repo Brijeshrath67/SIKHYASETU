@@ -1,1 +1,23 @@
-{}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sikhyasetu.local/contracts/models/learner-profile.json",
+  "title": "LearnerProfile",
+  "description": "A pseudonymous learner and their on-device data/session budget.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "name", "data_budget_mb", "session_minutes"],
+  "properties": {
+    "id": { "type": "string", "description": "Pseudonymous id; never a real name or roll number." },
+    "name": { "type": "string" },
+    "grade": { "type": "string", "default": "Class 9" },
+    "subject": { "type": "string", "default": "Science" },
+    "language": { "type": "string", "default": "Odia" },
+    "data_budget_mb": { "type": "number", "minimum": 0, "description": "Monthly data budget for this learner." },
+    "session_minutes": { "type": "integer", "minimum": 1 },
+    "consent_identification": {
+      "type": "boolean",
+      "description": "If false, the learner stays fully pseudonymous."
+    },
+    "last_synced_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

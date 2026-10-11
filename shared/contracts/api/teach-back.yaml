@@ -1,1 +1,39 @@
-{}
+openapi: 3.1.0
+info:
+  title: SikhyaSetu — Teach-back API
+  version: 1.0.0
+paths:
+  /api/v1/teach-back/{profile_id}:
+    post:
+      summary: Grade a learner's teach-back explanation deterministically
+      description: >
+        The phone queues the teach-back offline; when connectivity returns the
+        cloud re-grades it with the same rule-based rubric so results agree.
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [concept_id, transcript]
+              properties:
+                concept_id: { type: string }
+                transcript: { type: string, minLength: 1 }
+                audio_ref: { type: ["string", "null"] }
+                mistaken: { type: boolean, default: false }
+      responses:
+        "200":
+          description: The graded rubric
+          content:
+            application/json:
+              schema: { $ref: "../models/teach-back-grading.json" }
+        "422": { description: Empty transcript }
+components:
+  parameters:
+    ProfileId:
+      name: profile_id
+      in: path
+      required: true
+      schema: { type: string }

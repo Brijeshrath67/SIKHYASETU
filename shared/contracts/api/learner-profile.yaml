@@ -1,1 +1,71 @@
-{}
+openapi: 3.1.0
+info:
+  title: SikhyaSetu — Learner Profile API
+  version: 1.0.0
+paths:
+  /api/v1/learners:
+    get:
+      summary: List learner profiles
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "../models/learner-profile.json" }
+    post:
+      summary: Create a learner profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string }
+                grade: { type: string }
+                subject: { type: string }
+                language: { type: string }
+                data_budget_mb: { type: number }
+                session_minutes: { type: integer }
+                consent_identification: { type: boolean }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "../models/learner-profile.json" }
+        "409":
+          description: A learner with that id already exists
+  /api/v1/learners/{profile_id}:
+    get:
+      summary: Get one learner profile
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "../models/learner-profile.json" }
+        "404": { description: Not found }
+  /api/v1/learners/{profile_id}/fingerprints:
+    get:
+      summary: List mastery fingerprints for a learner
+      parameters:
+        - $ref: "#/components/parameters/ProfileId"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "../models/misconception-fingerprint.json" }
+components:
+  parameters:
+    ProfileId:
+      name: profile_id
+      in: path
+      required: true
+      schema: { type: string }
